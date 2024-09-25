@@ -1,0 +1,33 @@
+Retrieve the second highest salary from the employees table.
+Sample Input Data:
+Employees Table:
+| EmployeeID | Name | Salary |
+|------------|------|--------|
+| 1          | John | 5000   |
+| 2          | Jane | 7000   |
+| 3          | Mark | 6000   |
+| 4          | Sarah| 8000   |
+
+
+SOLUTION:
+
+--Solution1
+SELECT MAX(salary) AS second_highest_salary
+FROM employees
+WHERE salary < (SELECT MAX(salary) FROM employees);
+
+
+--Solution2
+WITH Second_highest AS (
+  SELECT name,salary,
+   DENSE_RANK() OVER (ORDER BY Salary Desc) AS D_nk
+FROM Employees
+)
+SELECT name
+FROM Second_highest
+WHERE D_nk=2
+
+Expected Output:
+| Salary |
+|--------|
+| 7000   |
